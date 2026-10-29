@@ -8,12 +8,12 @@ export type Lang = "en" | "tr";
 const STORAGE_KEY = "lang";
 const EVENT = "lang-change";
 
+// English unless the visitor picked Turkish with the TR / EN button
 function detect(): Lang {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === "en" || stored === "tr") return stored;
+    if (localStorage.getItem(STORAGE_KEY) === "tr") return "tr";
   } catch (_) {}
-  return navigator.language?.toLowerCase().startsWith("tr") ? "tr" : "en";
+  return "en";
 }
 
 export function getLang(): Lang {

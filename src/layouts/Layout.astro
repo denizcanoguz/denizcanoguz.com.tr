@@ -56,13 +56,9 @@ const { baseFontSize } = CONFIG.typography;
             document.documentElement.classList.remove("dark");
           }
         } catch (_) {}
-        // Same rule as src/lib/lang.ts: saved choice, else browser language
+        // Same rule as src/lib/lang.ts: English unless Turkish was picked
         try {
-          var lang = localStorage.getItem("lang");
-          if (lang !== "en" && lang !== "tr") {
-            lang = (navigator.language || "").toLowerCase().indexOf("tr") === 0 ? "tr" : "en";
-          }
-          document.documentElement.lang = lang;
+          document.documentElement.lang = localStorage.getItem("lang") === "tr" ? "tr" : "en";
         } catch (_) {}
       })();
     </script>
@@ -116,7 +112,6 @@ const { baseFontSize } = CONFIG.typography;
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
     <!-- Primary meta -->
     <title>{pageTitle}</title>

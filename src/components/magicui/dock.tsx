@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { motion, type MotionValue, useMotionValue, useSpring, useTransform } from "motion/react";
-import { createContext, useContext, useRef, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 
 interface DockProps {
   className?: string;
@@ -18,6 +18,10 @@ const DEFAULT_MAGNIFICATION = 60;
 const DEFAULT_DISTANCE = 100;
 const BASE_SIZE = 40;
 const BASE_ICON_SIZE = 20;
+// Phones: smaller buttons so the whole dock fits a ~360px portrait screen
+const SMALL_SCREEN_QUERY = "(max-width: 480px)";
+const SMALL_BASE_SIZE = 32;
+const SMALL_ICON_SIZE = 16;
 const ICON_SIZE_RATIO = 0.5;
 const SPRING = { mass: 0.1, stiffness: 150, damping: 12 };
 
@@ -25,15 +29,35 @@ interface DockContextValue {
   mouseX: MotionValue<number>;
   magnification: number;
   distance: number;
+  baseSize: number;
+  baseIconSize: number;
 }
 
 const DockContext = createContext<DockContextValue | null>(null);
 
+function useSmallScreen() {
+  const [small, setSmall] = useState(
+    () => typeof window !== "undefined" && window.matchMedia(SMALL_SCREEN_QUERY).matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(SMALL_SCREEN_QUERY);
+    const onChange = () => setSmall(mq.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+  return small;
+}
+
 const Dock = ({ className, children, magnification = DEFAULT_MAGNIFICATION, distance = DEFAULT_DISTANCE }: DockProps) => {
   const mouseX = useMotionValue(Infinity);
+  const small = useSmallScreen();
+  const baseSize = small ? SMALL_BASE_SIZE : BASE_SIZE;
+  const baseIconSize = small ? SMALL_ICON_SIZE : BASE_ICON_SIZE;
 
   return (
-    <DockContext.Provider value={{ mouseX, magnification, distance }}>
+    <DockContext.Provider
+      value={{ mouseX, magnification: small ? baseSize : magnification, distance, baseSize, baseIconSize }}
+    >
       <motion.div
         onMouseMove={(e) => mouseX.set(e.pageX)}
         onMouseLeave={() => mouseX.set(Infinity)}
@@ -53,7 +77,7 @@ const DockIcon = ({ className, children }: DockIconProps) => {
     throw new Error("DockIcon must be used within a Dock component");
   }
 
-  const { mouseX, magnification, distance } = context;
+  const { mouseX, magnification, distance, baseSize, baseIconSize } = context;
 
   const distanceCalc = useTransform(mouseX, (val: number) => {
     const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
@@ -61,11 +85,11 @@ const DockIcon = ({ className, children }: DockIconProps) => {
   });
 
   const containerSize = useSpring(
-    useTransform(distanceCalc, [-distance, 0, distance], [BASE_SIZE, magnification, BASE_SIZE]),
+    useTransform(distanceCalc, [-distance, 0, distance], [baseSize, magnification, baseSize]),
     SPRING
   );
   const iconSize = useSpring(
-    useTransform(distanceCalc, [-distance, 0, distance], [BASE_ICON_SIZE, magnification * ICON_SIZE_RATIO, BASE_ICON_SIZE]),
+    useTransform(distanceCalc, [-distance, 0, distance], [baseIconSize, Math.max(baseIconSize, magnification * ICON_SIZE_RATIO), baseIconSize]),
     SPRING
   );
 
