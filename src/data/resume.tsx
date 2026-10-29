@@ -1,4 +1,5 @@
 import { Icons } from "@/components/icons";
+import { useLang } from "@/lib/lang";
 import {
   BrainCircuit,
   Database,
@@ -25,6 +26,15 @@ export const DATA = {
     "Investment analyst with four years of hands-on analysis in asset management, valuing non-performing loan portfolios and reporting portfolio performance to internal teams and external investors. I build the analysis with SQL, Power BI, Python and Excel, backed by completed SQL Server, SQL & Power BI, SAP ABAP and 300-hour data science bootcamps. I'm looking to bring this business-side judgment to a dedicated data, BI or SAP team.\n\n**Languages:** Turkish (native), English (B1, intermediate).",
   avatarUrl: "/profile.jpg",
   ogImage: "/profile.jpg",
+  // Interface text that isn't part of a section
+  ui: {
+    greeting: "Hi, I'm",
+    home: "Home",
+    theme: "Theme",
+    language: "Türkçe",
+    emailCopied: "Email copied",
+    phoneCopied: "Phone copied",
+  },
   sections: {
     about: { order: 1, enabled: true, heading: "About" },
     work: { order: 2, enabled: true, heading: "Work Experience", presentLabel: "Present" },
@@ -384,3 +394,170 @@ export const DATA = {
     },
   ],
 } as const;
+
+// ---------------------------------------------------------------------------
+// Turkish version: same structure as DATA, only the text changes.
+// Lists are matched to DATA by position, so keep the order in sync.
+// ---------------------------------------------------------------------------
+
+const TR_WORK = [
+  {
+    title: "Yatırım Analisti, Yatırımlar Departmanı",
+    location: "İstanbul, Türkiye",
+    start: "Eylül 2022",
+    description:
+      "Bankaların ve finans şirketlerinin satışa çıkardığı takipteki kredi portföylerini ekibin bir parçası olarak değerlendiriyor, düzenledikleri ihalelere katılıyorum. Satın alınan portföylerin performansını şirket içi birimlere ve dış yatırımcılara raporluyorum. Pazar payı ve satış hacmi analizleri yapıyorum. SQL, Python, Power BI ve Excel kullanarak şirketin değerleme modelini geliştiren çalışmalara katkı sağlıyor ve iyileştirmeleri uyguluyorum.",
+  },
+  {
+    title: "Kalite Kontrol Ekip Üyesi, Kalite Departmanı",
+    location: "Sakarya, Türkiye",
+    start: "Kasım 2020",
+    end: "Mayıs 2021",
+    description:
+      "Üretim hattında araç yüzeylerinin ve parçalarının kalite kontrol standartlarına uygunluğunu kontrol ettim.",
+  },
+  {
+    company: "İSU Genel Müdürlüğü",
+    title: "Bilgi İşlem Stajyeri",
+    badges: ["Staj"],
+    description: "Veri toplama, temizleme, analiz ve raporlama.",
+  },
+  {
+    title: "Finansal Muhasebe Stajyeri",
+    badges: ["Staj"],
+    description: "Şirket içi ve dışı KPI raporlaması.",
+  },
+];
+
+const TR_EDUCATION = [
+  { school: "Bartın Üniversitesi", degree: "Yönetim Bilişim Sistemleri (Lisans) · GNO 3.38" },
+  {
+    school: "Sabancı Mesleki ve Teknik Anadolu Lisesi",
+    degree: "Bilişim Teknolojileri · Veri Tabanı Programcılığı",
+  },
+];
+
+const TR_SKILLS = [
+  "SQL",
+  "SQL Server",
+  "Power BI",
+  "Python",
+  "Excel",
+  "PowerPoint",
+  "SAP ABAP",
+  "Veri Temizleme ve Analiz",
+  "KPI ve Performans Raporlama",
+  "Makine Öğrenmesi Temelleri",
+  "Takipteki Kredi Portföyü Değerleme",
+  "Yatırımcı Raporlaması",
+  "Pazar Payı Analizi",
+];
+
+const TR_PROJECTS = [
+  {
+    title: "Power BI Dashboard Örneği",
+    description: "Uyku sağlığı ve yaşam tarzı veri seti üzerine hazırlanmış örnek bir Power BI dashboard'u.",
+  },
+  {
+    title: "RFM ile Müşteri Segmentasyonu",
+    description: "Müşterileri yenilik, sıklık ve parasal değere göre segmentlere ayırma.",
+  },
+  {
+    title: "Müşteri Yaşam Boyu Değeri Tahmini",
+    description: "Satın alma geçmişinden müşteri yaşam boyu değerini (CLTV) tahmin etme.",
+  },
+  {
+    title: "A/B Testi Vaka Çalışması",
+    description: "İki varyantı istatistiksel testlerle karşılaştıran bir A/B testi vaka çalışması.",
+    technologies: ["Python", "İstatistik"],
+  },
+  {
+    title: "Kural Tabanlı Sınıflandırma",
+    description:
+      "Bir oyun şirketi için seviye tabanlı müşteri personaları oluşturma ve her segmentteki yeni müşterilerin ortalama ne kadar kazandırabileceğini tahmin etme.",
+  },
+  {
+    title: "Telco Müşteri Kaybı Analizi",
+    description: "Telekom müşteri verisi üzerinde müşteri kaybı (churn) analizi ve özellik mühendisliği.",
+    technologies: ["Python", "Özellik Mühendisliği"],
+  },
+];
+
+const TR_CERTIFICATES = [
+  { title: "SAP ABAP Uzman Danışmanlık Eğitimi", dates: "2026 · 60 saat" },
+  { title: "İleri Seviye SQL Server Bootcamp", location: "Bilengo (eski adıyla BilgiAkademisi)" },
+  { title: "SQL ve Power BI Bootcamp", location: "Bilengo (eski adıyla BilgiAkademisi)" },
+  { dates: "2023'ten beri devam ediyor" },
+  { title: "Veri Bilimi ve Makine Öğrenmesi Bootcamp", description: "300 saat, 10 proje." },
+  {},
+  {},
+];
+
+const TR_SOCIAL_NAMES: Record<string, string> = {
+  email: "E-posta Gönder",
+  phone: "Ara",
+};
+
+export const DATA_TR = {
+  ...DATA,
+  description:
+    "Portföy verisini SQL, Power BI, Python ve Excel ile karara dönüştüren bir yatırım analistiyim.",
+  summary:
+    "Varlık yönetiminde dört yıllık uygulamalı analiz deneyimine sahip bir yatırım analistiyim. Takipteki kredi portföylerini değerliyor, portföy performansını şirket içi ekiplere ve dış yatırımcılara raporluyorum. Analizlerimi SQL, Power BI, Python ve Excel ile yapıyorum; bunu SQL Server, SQL ve Power BI, SAP ABAP eğitimleri ve 300 saatlik veri bilimi bootcamp'iyle destekledim. Bu iş tarafındaki bakış açımı bir veri, BI veya SAP ekibine taşımak istiyorum.\n\n**Diller:** Türkçe (ana dil), İngilizce (B1, orta seviye).",
+  ui: {
+    greeting: "Merhaba, ben",
+    home: "Ana Sayfa",
+    theme: "Tema",
+    language: "English",
+    emailCopied: "E-posta kopyalandı",
+    phoneCopied: "Telefon kopyalandı",
+  },
+  sections: {
+    ...DATA.sections,
+    about: { ...DATA.sections.about, heading: "Hakkımda" },
+    work: { ...DATA.sections.work, heading: "İş Deneyimi", presentLabel: "Halen" },
+    education: { ...DATA.sections.education, heading: "Eğitim" },
+    skills: { ...DATA.sections.skills, heading: "Yetenekler" },
+    projects: {
+      ...DATA.sections.projects,
+      label: "Projelerim",
+      heading: "Veri, Analitik ve Veri Bilimi",
+      text: "Power BI raporlamasından müşteri segmentasyonuna, A/B testinden yaşam boyu değer ve müşteri kaybı analizine kadar hazırladığım dashboard'lar, analizler ve modeller. Çalışmaların tamamı GitHub ve Kaggle'da.",
+    },
+    hackathons: {
+      ...DATA.sections.hackathons,
+      label: "Öğrenme",
+      heading: "Kurslar ve Sertifikalar",
+      text: "SQL Server ve Power BI'dan SAP ABAP'a ve 300 saatlik veri bilimi bootcamp'ine kadar, işimin yanında tamamladığım eğitimler.",
+    },
+    contact: {
+      ...DATA.sections.contact,
+      label: "İletişim",
+      heading: "İletişime Geçin",
+      text: "Veri, BI veya SAP alanındaki bir pozisyon hakkında konuşmak ister misiniz? Bana e-posta gönderin ya da LinkedIn'den ulaşın.",
+    },
+  },
+  skills: DATA.skills.map((s, i) => ({ ...s, name: TR_SKILLS[i] ?? s.name })),
+  navbar: DATA.navbar.map((n) => (n.href === "/" ? { ...n, label: "Ana Sayfa" } : n)),
+  contact: {
+    ...DATA.contact,
+    social: Object.fromEntries(
+      Object.entries(DATA.contact.social).map(([key, s]) => [
+        key,
+        { ...s, name: TR_SOCIAL_NAMES[key] ?? s.name },
+      ]),
+    ),
+  },
+  work: DATA.work.map((w, i) => ({ ...w, ...TR_WORK[i] })),
+  education: DATA.education.map((e, i) => ({ ...e, ...TR_EDUCATION[i] })),
+  projects: DATA.projects.map((p, i) => ({ ...p, ...TR_PROJECTS[i] })),
+  hackathons: DATA.hackathons.map((h, i) => ({
+    ...h,
+    ...TR_CERTIFICATES[i],
+    links: h.links.map((l) => ({ ...l, title: "Belge" })),
+  })),
+} as unknown as typeof DATA;
+
+export function useData(): typeof DATA {
+  return useLang() === "tr" ? DATA_TR : DATA;
+}

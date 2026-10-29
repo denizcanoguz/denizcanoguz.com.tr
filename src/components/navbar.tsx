@@ -7,16 +7,19 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { DATA } from "@/data/resume";
+import { useData } from "@/data/resume";
+import { setLang, useLang } from "@/lib/lang";
 import { useState } from "react";
 
 export default function Navbar() {
+  const DATA = useData();
+  const lang = useLang();
   // mailto:/tel: do nothing when the visitor has no mail or phone app set up
   // (most desktops), so those buttons also copy the address and say so.
   const [copied, setCopied] = useState<string | null>(null);
   const copyContact = (label: string, value: string) => {
     navigator.clipboard?.writeText(value).then(() => {
-      setCopied(`${label} copied: ${value}`);
+      setCopied(`${label}: ${value}`);
       setTimeout(() => setCopied(null), 2500);
     }).catch(() => {});
   };
@@ -64,9 +67,9 @@ export default function Navbar() {
           .map(([name, social], index) => {
             const isExternal = social.url.startsWith("http");
             const onClick = social.url.startsWith("mailto:")
-              ? () => copyContact("Email", DATA.contact.email)
+              ? () => copyContact(DATA.ui.emailCopied, DATA.contact.email)
               : social.url.startsWith("tel:")
-                ? () => copyContact("Phone", DATA.contact.tel)
+                ? () => copyContact(DATA.ui.phoneCopied, DATA.contact.tel)
                 : undefined;
             const IconComponent = social.icon;
             return (
@@ -109,7 +112,28 @@ export default function Navbar() {
             sideOffset={8}
             className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
           >
-            <p>Theme</p>
+            <p>{DATA.ui.theme}</p>
+            <TooltipArrow className="fill-primary" />
+          </TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              type="button"
+              aria-label={DATA.ui.language}
+              onClick={() => setLang(lang === "tr" ? "en" : "tr")}
+            >
+              <DockIcon className="rounded-3xl cursor-pointer size-full bg-background p-0 text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                <span className="text-xs font-semibold">{lang === "tr" ? "EN" : "TR"}</span>
+              </DockIcon>
+            </button>
+          </TooltipTrigger>
+          <TooltipContent
+            side="top"
+            sideOffset={8}
+            className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+          >
+            <p>{DATA.ui.language}</p>
             <TooltipArrow className="fill-primary" />
           </TooltipContent>
         </Tooltip>
